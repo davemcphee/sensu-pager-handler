@@ -1,0 +1,23 @@
+---
+loglevel: DEBUG
+
+slack_config:
+  webhook: blagh
+  default_channel: \#alerts
+
+alertconfig:
+  alert_name:
+    contacts:
+      - first_contact
+      - second_contact
+      - third_contact
+    vars:
+      custom_variable: 42
+
+  capture_hc:
+    contacts:
+      - "@matthew_devney"
+      - "@jack.chung"
+      - "@alexs"
+    vars:
+      custom_message: "The System ... is down"
