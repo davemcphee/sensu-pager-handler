@@ -4,15 +4,8 @@
 """
 python sensu handler - now with decision making ability!
 
-TODO list:
-    accept an alert - what does it look like? What data we got? JSON text? DONE
-    read config from somewhere. what kind of info do we need? What decisions do we need to make? DONE
-        What type of alert is this? DONE
-        What is the response chain for this alert? (response chain: first farshid, 5 mins later, josh, 5 mins later,
-            infra on call) DONE-  get this from config.yml file
-        How do we alert the person? Slack? DONE - yeah slack. We need to interact with person.
-        Wait 5 mins for the correct reply. IF we got it, quit. If not, alert next person in response chain
-            This will need a bot ... maybe?
+You know what, now that I've built the sensu slackbot, we can make this app as dumb as a box of rocks.
+Just take every check event and forward it to slackbot, let it decide what to do.
 """
 
 import json
@@ -20,8 +13,8 @@ import logging
 import sys
 
 from config import get_config
-
-logging.basicConfig(level=logging.DEBUG)
+from sensu_slackbot.sensu_slackbot_tasks import alert_loop as to_the_slack_mobile_slackman
+logging.basicConfig(level=logging.WARN)
 
 
 class SensuHandler(object):
@@ -35,9 +28,6 @@ class SensuHandler(object):
         self.known_alerts = self.config['alertconfig'].keys()
         self.LOG.debug("Configured alerts: {}".format(self.known_alerts))
 
-
-        pass
-
     def handle(self):
         """
         Get JSON data from stdin
@@ -49,13 +39,8 @@ class SensuHandler(object):
         event_client_address = event_data['client']['address']
         self.LOG.debug("Received an event named {} from host {} [{}]".format(event_name, event_client_name, event_client_address))
 
-        # Do we know about this event?
-        if event_name in self.known_alerts:
-            # route it!
-            self.LOG.debug("It's a {} system. I know this!".format(event_name))
-            self.start_alerting_cycle(event_data)
-        else:
-            self.LOG.debug("I don't know this alert, routing to default contact Matthew D.")
+        alert_config = self.config['alertconfig'][event_name]
+        res = to_the_slack_mobile_slackman(event_data, alert_config)
         return 0
 
     def start_alerting_cycle(self, event):
@@ -63,6 +48,7 @@ class SensuHandler(object):
         # kinda pre-supposes slack as contact method.
         pass
 
+    # I copied these from ruby. I don't know what they're supposed to do.
     def filter(self):
         pass
 
