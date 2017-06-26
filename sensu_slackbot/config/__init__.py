@@ -17,7 +17,7 @@ def get_config():
     current_dir = os.path.dirname(os.path.realpath(__file__))
     config_file = os.path.join(current_dir, 'config.yml')
     if os.path.isfile(config_file):
-        with file(config_file, 'r') as f:
+        with open(config_file, 'r') as f:
             config_dict = yaml.load(f)
         return config_dict
     else:
@@ -26,4 +26,4 @@ def get_config():
 
 
 if __name__ == '__main__':
-    print get_config()
+    print(get_config())

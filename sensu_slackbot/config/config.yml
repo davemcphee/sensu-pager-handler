@@ -16,8 +16,9 @@ alertconfig:
 
   capture_hc:
     contacts:
-      - "@matthew.d"
-      - "@jack.c"
-      - "@alexs"
+      - "alex"
+      - "dave"
+      - "john"
+      - "susan"
     vars:
       custom_message: "The System ... is down"

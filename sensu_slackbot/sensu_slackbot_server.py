@@ -1,6 +1,9 @@
-from __future__ import absolute_import, unicode_literals
-from celery import Celery
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+
 import os
+
+from celery import Celery
 
 RABBIT_URL = os.getenv('RABBIT_URL')
 BACKEND_URL = RABBIT_URL  # Share existing RabbitMQ? Use .. elasticsearch?!?!?! omg
